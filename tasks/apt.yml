@@ -1,0 +1,15 @@
+---
+- name: add the Sensu repository's key
+  apt_key: url={{ sensu_server_repo_key_url }} state=present
+
+- name: sure python-apt package is installed
+  apt: name=python-apt state=present
+
+- name: add Sensu repository
+  apt_repository:
+    repo: "{{ sensu_server_repo }}"
+    state: present
+    update_cache: yes
+
+- name: install sensu package
+  apt: name=sensu state=present

@@ -1,0 +1,29 @@
+# Sensu repository's key URL
+sensu_server_repo_key_url: "http://repos.sensuapp.org/apt/pubkey.gpg"
+
+# Sensu repository
+sensu_server_repo: "deb http://repos.sensuapp.org/apt sensu main"
+
+# Use SSL for connecting with rabbitmq?
+sensu_server_ssl_enable: false
+
+# Sensu Server variables
+sensu_server_user:  sensu
+sensu_server_group: sensu
+
+sensu_server_redis_host: "127.0.0.1"
+sensu_server_redis_port: 6379
+
+sensu_server_api_host: "127.0.0.1"
+sensu_server_api_port: 4567
+
+sensu_server_embedded_ruby: "true"
+
+sensu_server_rabbitmq_hostname: "127.0.0.1"
+sensu_server_rabbitmq_user    : "sensu"
+sensu_server_rabbitmq_port    : 5672
+sensu_server_rabbitmq_password: "placeholder"
+sensu_server_rabbitmq_vhost:    "/sensu"
+
+sensu_server_dashboard_host    : "127.0.0.1"
+sensu_server_dashboard_password: "placeholder"

@@ -1,0 +1,13 @@
+---
+
+- name: install init scripts
+  command: /usr/sbin/update-rc.d -f sensu-{{ item }} remove && /usr/sbin/update-rc.d sensu-{{ item }} defaults
+  with_items:
+    - server
+    - api
+
+- name: restart sensu server
+  service: name=sensu-{{ item }} state=restarted
+  with_items:
+    - server
+    - api

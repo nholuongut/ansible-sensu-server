@@ -1,0 +1,57 @@
+---
+
+- name: copy the patched init script
+  copy:
+    src: 'etc/init.d/sensu-{{ item }}'
+    dest: '/etc/init.d/'
+    owner: root
+    group: root
+    mode: 755
+  with_items:
+    - server
+    - api
+  notify:
+    - install init scripts
+
+- name: enable sensu-{server,api} services
+  service: name=sensu-{{ item }} enabled=yes
+  with_items:
+    - server
+    - api
+
+- name: set which Ruby to use
+  lineinfile:
+    dest: '/etc/default/sensu'
+    regexp: '^EMBEDDED_RUBY='
+    line: 'EMBEDDED_RUBY={{ sensu_server_embedded_ruby }}'
+  notify:
+    - restart sensu server
+
+- name: set which user to use
+  lineinfile:
+    dest: '/etc/default/sensu'
+    regexp: '^USER='
+    line: 'USER={{ sensu_server_user }}'
+  notify:
+    - restart sensu server
+
+- name: create /etc/sensu/config.json
+  template:
+    src: etc/sensu/config.json.j2
+    dest: /etc/sensu/config.json
+    owner: "{{ sensu_server_user }}"
+    group: "{{ sensu_server_group }}"
+    mode: 0640
+    backup: yes
+  notify:
+    - restart sensu server
+
+- name: copy config files
+  copy:
+    src: files/etc/sensu/conf.d/
+    dest: /etc/sensu/conf.d/
+    owner: "{{ sensu_server_user }}"
+    group: "{{ sensu_server_group }}"
+    mode: 0640
+  notify:
+    - restart sensu server
